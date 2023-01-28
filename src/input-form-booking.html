@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Book Hotel</title>
+	<style type="text/css">
+		label {
+			margin: 4px 0px;
+		}
+
+		#booking-input-form-header {
+			width: full;
+			padding: 20px;
+			text-align: center;
+		}
+
+		#booking-input-form {
+			display: flex;
+			flex-direction: column;
+			margin-right: auto;
+			margin-left: auto;
+			max-width: 1000px;
+			width: 60%;
+		}
+
+		#booking-input-form-submit-button {
+			margin: 20px 0px;
+			padding: 10px 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<!--
+		Hotel (Hno , Hname , city, phone ,Room_type ,Price)
+		Guest (Gno ,gname ,Address ,Phone)
+		Booking (Hno ,Gno ,Date_from ,Date_to)
+	-->
+
+	<h1 id="booking-input-form-header">Enter Booking Details</h1>
+
+	<form id="booking-input-form" name="booking-input-form" action="" method="POST">
+
+		<label for="hno">Enter Hotel Number : </label>
+		<input type="number" name="hno" placeholder="Enter Hotel Number" />
+		<br />
+
+		<label for="gno">Enter Guest Number : </label>
+		<input type="number" name="gno" placeholder="Enter Guest Number" />
+		<br />
+
+		<label for="date_from">Book From : </label>
+		<input type="date" name="date_from" />
+		<br />
+
+		<label for="date_upto">Book Upto : </label>
+		<input type="date" name="date_upto" />
+		<br />
+
+		<div>
+			<button id="booking-input-form-submit-button" type="submit" for="booking-input-form">
+				Submit
+			</button>
+		</div>
+	</form>
+</body>
+<script>var exports = {};</script>
+<script type="module" src="/static/input-form-booking.js" defer></script>
+
+
+</html>

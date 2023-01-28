@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Hotel Input</title>
+	<style type="text/css">
+		label {
+			margin: 4px 0px;
+		}
+
+		#hotel-input-form-header {
+			width: full;
+			padding: 20px;
+			text-align: center;
+		}
+
+		#hotel-input-form {
+			display: flex;
+			flex-direction: column;
+			margin-right: auto;
+			margin-left: auto;
+			max-width: 1000px;
+			width: 60%;
+		}
+
+		#hotel-input-form-submit-button {
+			margin: 20px 0px;
+			padding: 10px 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<!--
+	Hotel (Hno , Hname , city, phone ,Room_type ,Price)
+	Guest (Gno ,gname ,Address ,Phone)
+	Booking (Hno ,Gno ,Date_from ,Date_to)
+-->
+
+	<h1 id="hotel-input-form-header">Enter Hotel Details</h1>
+
+	<form id="hotel-input-form" name="hotel-input-form" action="" method="POST">
+
+		<label for="hotel_name">Enter Hotel Name : </label>
+		<input type="text" name="hotel_name" placeholder="Enter Hotel Name" required />
+		<br />
+
+		<label for="hotel_city">City : </label>
+		<input type="text" name="hotel_city" placeholder="Enter City : " required />
+		<br />
+
+		<label for="hotel_phone_number">Enter Phone Number : </label>
+		<input type="number" name="hotel_phone_number" placeholder="Enter Phone Number" required />
+		<br />
+
+		<label for="hotel_room_type">Enter A Room Type :</label>
+		<select name="hotel_room_type" id="hotel_room_type" required>
+			<option value="non_ac_single_bed">Non-AC Single Bed</option>
+			<option value="non_ac_double_bed">Non-AC Double Deb</option>
+			<option value="ac_single_bed">AC Single Bed</option>
+			<option value="ac_double_bed">AC Double Bed</option>
+		</select>
+		<br />
+
+		<label for="hotel_price">Enter Hotel Price</label>
+		<input type="number" name="hotel_price" placeholder="Enter Hotel Number" required />
+		<div>
+			<button id="hotel-input-form-submit-button" type="submit" for="hotel-input-form">
+				Submit
+			</button>
+		</div>
+	</form>
+</body>
+<!-- 
+	ReferenceError: exports is not defined
+	Solution
+	If you are getting the error for code that runs in the browser, try defining 
+	a global exports variable above the script tags that load your JS files. 
+-->
+<script>var exports = {};</script>
+<script type="module" src="/static/input-form-hotel.js" defer></script>
+
+</html>

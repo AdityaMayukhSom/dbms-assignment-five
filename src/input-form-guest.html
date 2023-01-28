@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Guest Input</title>
+	<style type="text/css">
+		label {
+			margin: 4px 0px;
+		}
+
+		#guest-input-form-header {
+			width: full;
+			padding: 20px;
+			text-align: center;
+		}
+
+		#guest-input-form {
+			display: flex;
+			flex-direction: column;
+			margin-right: auto;
+			margin-left: auto;
+			max-width: 1000px;
+			width: 60%;
+		}
+
+		#guest-input-form-submit-button {
+			margin: 20px 0px;
+			padding: 10px 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<!--
+	Hotel (Hno , Hname , city, phone ,Room_type ,Price)
+	Guest (Gno ,gname ,Address ,Phone)
+	Booking (Hno ,Gno ,Date_from ,Date_to)
+	-->
+
+	<h1 id="guest-input-form-header">Enter Guest Details</h1>
+
+	<form id="guest-input-form" name="guest-input-form" action="" method="POST">
+		<label for="guest_name">Enter Guest Name : </label>
+		<input type="text" name="guest_name" placeholder="Enter Guest Name" required />
+		<br />
+
+		<label for="guest_address">Enter Guest Address : </label>
+		<textarea name="guest_address" placeholder="Enter Guest Address" required></textarea>
+
+		<label for="guest_phone_number">Enter Guest Phone Number :</label>
+		<input type="number" name="guest_phone_number" placeholder="Enter Guest Phone Number" required />
+		<div>
+			<button id="guest-input-form-submit-button" type="submit" for="guest-input-form">
+				Submit
+			</button>
+		</div>
+	</form>
+</body>
+<script>var exports = {};</script>
+<script src="/static/input-form-guest.js"></script>
+
+</html>
