@@ -35,6 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var table = document.querySelector("table");
+var hotelModalBackground = document.getElementById('hotel-modal-background');
+var hotelModalCloseButton = document.getElementById('hotel-modal-close-button');
 function getAllHotels() {
     return __awaiter(this, void 0, void 0, function () {
         var res, hotelData, _i, hotelData_1, hotel, row, HnoCell, HnameCell, CityCell, PhoneCell, Room_typeCell, PriceCell, priceInINR, EditDeleteBtnContainerRow, EditDeleteBtnContainer, editBtn, deleteBtn;
@@ -75,6 +77,7 @@ function getAllHotels() {
                         editBtn = document.createElement('button');
                         editBtn.innerText = 'Edit';
                         editBtn.classList.add('edit-button-style');
+                        editBtn.addEventListener('click', editHotel);
                         deleteBtn = document.createElement('button');
                         deleteBtn.innerText = 'Delete';
                         deleteBtn.classList.add('delete-button-style');
@@ -90,28 +93,37 @@ function getAllHotels() {
         });
     });
 }
-function handleEdit() {
+function displayModal() {
+    hotelModalBackground.classList.remove('hidden');
+}
+function hideModal() {
+    hotelModalBackground.classList.add('hidden');
+}
+function editHotel(e) {
     return __awaiter(this, void 0, void 0, function () {
+        var tableRow, hotelID;
         return __generator(this, function (_a) {
+            displayModal();
+            tableRow = e.currentTarget.parentNode.parentNode.parentNode;
+            hotelID = Number(tableRow.dataset.hid);
             return [2 /*return*/];
         });
     });
 }
 function deleteHotel(e) {
     return __awaiter(this, void 0, void 0, function () {
-        var tableRow, hotelNumber, res;
+        var tableRow, hotelID, res;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     tableRow = e.currentTarget.parentNode.parentNode.parentNode;
-                    hotelNumber = Number(tableRow.dataset.hid);
-                    return [4 /*yield*/, fetch("http://localhost:5000/delete-hotel/".concat(hotelNumber), {
+                    hotelID = Number(tableRow.dataset.hid);
+                    return [4 /*yield*/, fetch("http://localhost:5000/delete-hotel/".concat(hotelID), {
                             method: 'DELETE'
                         })];
                 case 1:
                     res = _a.sent();
                     if (res.ok) {
-                        console.log(hotelNumber + ' hotel deleted');
                         tableRow.remove();
                     }
                     else {
@@ -122,4 +134,6 @@ function deleteHotel(e) {
         });
     });
 }
+hideModal();
 getAllHotels();
+hotelModalCloseButton.addEventListener('click', hideModal);

@@ -12,3 +12,9 @@
 .delete-button-style {
   @apply bg-red-500 text-white p-2 rounded-md text-center inline-block no-underline;
 }
+
+/* This is specifically written because otherwise if some class is not used in html directly, tailwind is not adding that class in the output.css. */
+/* Hence if some class is dynamically injected using javascript, the css is not available for that class */
+.hidden {
+  display: none;
+}

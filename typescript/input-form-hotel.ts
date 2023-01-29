@@ -1,21 +1,24 @@
+
 interface HotelDataType {
     hotelName: string,
     hotelCity: string,
     hotelRoomType: string,
     hotelPhoneNumber: number,
-    hotelPrice: number
+    hotelPrice: number;
 }
 
 const hotelInputForm = document.querySelector("#hotel-input-form") as HTMLFormElement;
 if (!hotelInputForm) {
     throw new Error("hotel input form not found");
 }
+const hotelInputFormSubmitButton = document.getElementById('hotel-input-form-submit-button') as HTMLButtonElement;
 
 hotelInputForm.addEventListener('submit', (e: SubmitEvent) => {
     e.preventDefault();
+    hotelInputFormSubmitButton.disabled = true;
     const formData = new FormData(hotelInputForm);
     if (!formData) {
-        throw new Error("hotel input form wasn't submitted successfully")
+        throw new Error("hotel input form wasn't submitted successfully");
     }
 
     const hotelData: HotelDataType = {
@@ -24,7 +27,7 @@ hotelInputForm.addEventListener('submit', (e: SubmitEvent) => {
         hotelRoomType: (formData.get('hotel_room_type') as string).trim(),
         hotelPhoneNumber: Number(formData.get('hotel_phone_number') as string),
         hotelPrice: Number(formData.get('hotel_price') as string)
-    }
+    };
     createHotel(hotelData);
 });
 
@@ -36,9 +39,14 @@ async function createHotel(hotelData: HotelDataType) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(hotelData)
-    })
+    });
+
 
     if (!res.ok) {
-        console.error('could not create hotel')
+        console.error('could not create hotel');
+        hotelInputFormSubmitButton.disabled = false;
+    } else {
+        // location.reload();
+        location.assign(res.url);
     }
 }

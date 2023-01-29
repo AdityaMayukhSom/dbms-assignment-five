@@ -7,33 +7,36 @@ import { addNewBooking } from './src/handleBookings';
 
 const app: Application = express();
 const port: number = 5000;
-
+const baseURL: string = 'http://localhost:' + port;
 // Because we are using Express@4 we need to install the body - parser package:
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
-app.use('/static', express.static(__dirname + '/public'));
+app.use('/assets', express.static(__dirname + '/public/assets'));
+app.use('/css', express.static(__dirname + '/public/css'));
+app.use('/scripts', express.static(__dirname + '/public/scripts'));
 
 app.get('/', (req: Request, res: Response) => {
-	res.sendFile(__dirname + '/src/homepage.html');
+	res.sendFile(__dirname + '/public/homepage.html');
 });
 
 /* routes for hotels */
 app.get('/hotel-input-form', (req: Request, res: Response) => {
-	res.sendFile(__dirname + '/src/input-form-hotel.html');
+	res.sendFile(__dirname + '/public/input-form-hotel.html');
 });
 
-app.post('/hotelinput', (req: Request, res: Response) => {
+app.post('/hotelinput', async (req: Request, res: Response) => {
 	const hotelData: HotelDataType = req.body;
 	if (!hotelData) {
 		return res.status(400).send({ status: 'failed to recieve hotel data' });
 	}
 
 	try {
-		addNewHotel(hotelData);
-		return res.status(200).send({ status: 'hotel data recieved and succesfully updated to database' });
+		await addNewHotel(hotelData);
+		return res.status(301).location('/current-hotels').send('hotel data is recieved and succesfully added to the database');
+
 	} catch (err) {
-		return res.status(500).send({ errorMsg: 'hotel data recieved but server was unable to update the database', errorObj: err });
+		return res.status(500).send('hotel data recieved but server was unable to update the database');
 	}
 });
 
@@ -47,7 +50,7 @@ app.delete('/hotelinput', (req: Request, res: Response) => {
 
 /* routes for guests */
 app.get('/guest-input-form', (req: Request, res: Response) => {
-	res.sendFile(__dirname + '/src/input-form-guest.html');
+	res.status(200).sendFile(__dirname + '/public/input-form-guest.html');
 });
 
 app.post('/guestinput', (req: Request, res: Response) => {
@@ -73,7 +76,7 @@ app.delete('/guestinput', (req: Request, res: Response) => {
 
 /* routes for bookings */
 app.get('/booking-input-form', (req: Request, res: Response) => {
-	res.sendFile(__dirname + '/src/input-form-booking.html');
+	res.status(200).sendFile(__dirname + '/public/input-form-booking.html');
 });
 
 app.post('/bookinginput', (req: Request, res: Response) => {
@@ -92,15 +95,15 @@ app.delete('/bookinginput', (req: Request, res: Response) => {
 });
 
 app.get('/current-hotels', (req: Request, res: Response) => {
-	res.status(200).sendFile(__dirname + '/src/list-hotels.html');
+	res.status(200).sendFile(__dirname + '/public/list-hotels.html');
 });
 
 app.get('/current-guests', (req: Request, res: Response) => {
-	res.status(200).sendFile(__dirname + '/src/list-guests.html');
+	res.status(200).sendFile(__dirname + '/public/list-guests.html');
 });
 
 app.get('/current-bookings', (req: Request, res: Response) => {
-	res.status(200).sendFile(__dirname + '/src/list-bookings.html');
+	res.status(200).sendFile(__dirname + '/public/list-bookings.html');
 });
 
 app.get('/get-all-hotels', async (req: Request, res: Response) => {
@@ -125,7 +128,7 @@ app.delete('/delete-hotel/:hotelID', async (req: Request, res: Response) => {
 
 
 app.get('*', (req: Request, res: Response) => {
-	res.sendFile(__dirname + '/src/page-not-found.html');
+	res.sendFile(__dirname + '/public/page-not-found.html');
 });
 
 app.listen(port);

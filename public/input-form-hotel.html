@@ -48,7 +48,7 @@
 		<br />
 
 		<label for="hotel_city">City : </label>
-		<input type="text" name="hotel_city" placeholder="Enter City : " required />
+		<input type="text" name="hotel_city" placeholder="Enter City" required />
 		<br />
 
 		<label for="hotel_phone_number">Enter Phone Number : </label>
@@ -57,10 +57,10 @@
 
 		<label for="hotel_room_type">Enter A Room Type :</label>
 		<select name="hotel_room_type" id="hotel_room_type" required>
-			<option value="non_ac_single_bed">Non-AC Single Bed</option>
-			<option value="non_ac_double_bed">Non-AC Double Deb</option>
-			<option value="ac_single_bed">AC Single Bed</option>
-			<option value="ac_double_bed">AC Double Bed</option>
+			<option value="Non-AC Single Bed">Non-AC Single Bed</option>
+			<option value="Non-AC Double Bed">Non-AC Double Deb</option>
+			<option value="AC Single Bed">AC Single Bed</option>
+			<option value="AC Double Bed">AC Double Bed</option>
 		</select>
 		<br />
 
@@ -72,14 +72,15 @@
 			</button>
 		</div>
 	</form>
+
+	<!-- 
+		ReferenceError: exports is not defined
+		Solution
+		If you are getting the error for code that runs in the browser, try defining 
+		a global exports variable above the script tags that load your JS files. 
+	-->
+	<script>var exports = {};</script>
+	<script type="module" src="/scripts/input-form-hotel.js" defer></script>
 </body>
-<!-- 
-	ReferenceError: exports is not defined
-	Solution
-	If you are getting the error for code that runs in the browser, try defining 
-	a global exports variable above the script tags that load your JS files. 
--->
-<script>var exports = {};</script>
-<script type="module" src="/static/input-form-hotel.js" defer></script>
 
 </html>

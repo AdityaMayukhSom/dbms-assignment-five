@@ -1,4 +1,6 @@
 const table = document.querySelector("table") as HTMLTableElement;
+const hotelModalBackground = document.getElementById('hotel-modal-background') as HTMLDivElement;
+const hotelModalCloseButton = document.getElementById('hotel-modal-close-button') as HTMLButtonElement;
 
 async function getAllHotels(): Promise<void> {
     const res = await fetch('http://localhost:5000/get-all-hotels');
@@ -40,6 +42,7 @@ async function getAllHotels(): Promise<void> {
         const editBtn = document.createElement('button');
         editBtn.innerText = 'Edit';
         editBtn.classList.add('edit-button-style');
+        editBtn.addEventListener('click', editHotel);
 
         const deleteBtn = document.createElement('button');
         deleteBtn.innerText = 'Delete';
@@ -56,23 +59,35 @@ async function getAllHotels(): Promise<void> {
     }
 }
 
-async function handleEdit(): Promise<void> {
+function displayModal(): void {
+    hotelModalBackground.classList.remove('hidden');
+}
+function hideModal(): void {
+    hotelModalBackground.classList.add('hidden');
+}
+
+async function editHotel(e: MouseEvent) {
+    displayModal();
+    const tableRow = (((e.currentTarget as HTMLButtonElement).parentNode as HTMLDivElement).parentNode as HTMLTableCellElement).parentNode as HTMLTableRowElement;
+
+    const hotelID = Number(tableRow.dataset.hid);
 
 }
 
 async function deleteHotel(e: MouseEvent) {
     const tableRow = (((e.currentTarget as HTMLButtonElement).parentNode as HTMLDivElement).parentNode as HTMLTableCellElement).parentNode as HTMLTableRowElement;
-    const hotelNumber = Number(tableRow.dataset.hid);
-    const res = await fetch(`http://localhost:5000/delete-hotel/${hotelNumber}`, {
+    const hotelID = Number(tableRow.dataset.hid);
+    const res = await fetch(`http://localhost:5000/delete-hotel/${hotelID}`, {
         method: 'DELETE'
     });
 
     if (res.ok) {
-        console.log(hotelNumber + ' hotel deleted');
         tableRow.remove();
     } else {
         console.log('some error occurred');
     }
 }
 
+hideModal();
 getAllHotels();
+hotelModalCloseButton.addEventListener('click', hideModal);

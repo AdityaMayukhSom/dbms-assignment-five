@@ -5,7 +5,7 @@
   "main": "./src/app.ts",
   "scripts": {
     "dev": "nodemon app.ts",
-    "tailwind": "npx tailwindcss -i ./public/source.css -o ./public/output.css --watch"
+    "tailwind": "npx tailwindcss -i ./public/css/source.css -o ./public/css/output.css --watch"
   },
   "author": "aditya mayukh som",
   "license": "ISC",

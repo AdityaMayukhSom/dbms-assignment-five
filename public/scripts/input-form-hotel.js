@@ -38,8 +38,10 @@ var hotelInputForm = document.querySelector("#hotel-input-form");
 if (!hotelInputForm) {
     throw new Error("hotel input form not found");
 }
+var hotelInputFormSubmitButton = document.getElementById('hotel-input-form-submit-button');
 hotelInputForm.addEventListener('submit', function (e) {
     e.preventDefault();
+    hotelInputFormSubmitButton.disabled = true;
     var formData = new FormData(hotelInputForm);
     if (!formData) {
         throw new Error("hotel input form wasn't submitted successfully");
@@ -69,6 +71,11 @@ function createHotel(hotelData) {
                     res = _a.sent();
                     if (!res.ok) {
                         console.error('could not create hotel');
+                        hotelInputFormSubmitButton.disabled = false;
+                    }
+                    else {
+                        // location.reload();
+                        location.assign(res.url);
                     }
                     return [2 /*return*/];
             }

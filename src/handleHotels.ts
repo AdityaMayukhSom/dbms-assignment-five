@@ -1,19 +1,24 @@
 import { db, HotelDataType, toTitleCase, validatePhoneNumber } from "./middleware";
 
-export function addNewHotel(hotelData: HotelDataType) {
-    const { hotelName, hotelCity, hotelRoomType, hotelPhoneNumber, hotelPrice } = hotelData;
-    if (!validatePhoneNumber(hotelPhoneNumber.toString())) {
-        console.log('hotel phone number invalid : handleHotel.ts');
-        throw new Error('invalid hotel mobile number given');
-    }
-    db.run(`
+export async function addNewHotel(hotelData: HotelDataType): Promise<void> {
+    return new Promise((resolve, reject) => {
+        const { hotelName, hotelCity, hotelRoomType, hotelPhoneNumber, hotelPrice } = hotelData;
+        if (!validatePhoneNumber(hotelPhoneNumber.toString())) {
+            console.log('hotel phone number invalid : handleHotel.ts');
+            throw new Error('invalid hotel mobile number given');
+        }
+        db.run(`
     	insert into Hotel (Hname, City, Phone, Room_type, Price)
     	values ("${toTitleCase(hotelName)}", "${toTitleCase(hotelCity)}", ${hotelPhoneNumber}, "${hotelRoomType}", ${hotelPrice});
     `, (err: Error) => {
-        if (err) {
-            throw err;
-        }
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
     });
+
 }
 
 export async function getAllHotels(): Promise<any[]> {
