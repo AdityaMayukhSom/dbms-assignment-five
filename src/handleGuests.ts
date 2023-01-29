@@ -5,8 +5,8 @@ export function addNewGuest(guestData: GuestDataType): void {
     db.run(`insert into Guest (Gname, Address, Phone) 
     values ("${guestName}", "${guestAddress}", ${guestPhoneNumber})`, (err: Error) => {
         if (err) {
-            console.error(err.message)
+            console.error(err.message);
             throw err;
         }
-    })
+    });
 }

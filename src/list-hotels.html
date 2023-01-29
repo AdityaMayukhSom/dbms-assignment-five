@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/output.css">
+    <title>Get All Hotels</title>
+    <style>
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="w-full text-center text-5xl py-8 font-bold">Hotel Data</h1>
+    <table aria-busy="true" class="border-collapse w-full border-gray-400 ">
+        <thead>
+            <tr class="bg-[#f2f2f2] [&>*]:text-center">
+                <th>Hotel ID</th>
+                <th>Hotel Name</th>
+                <th>Location / City</th>
+                <th>Phone</th>
+                <th>Room Type</th>
+                <th>Price</th>
+                <th>Modify / Delete</th>
+            </tr>
+        </thead>
+        <tbody id="tableData" class=""></tbody>
+    </table>
+
+    <script>var exports = {};</script>
+    <script src="/static/list-hotels.js"></script>
+</body>
+
+</html>

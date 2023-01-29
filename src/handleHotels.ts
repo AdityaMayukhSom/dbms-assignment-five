@@ -3,8 +3,8 @@ import { db, HotelDataType, toTitleCase, validatePhoneNumber } from "./middlewar
 export function addNewHotel(hotelData: HotelDataType) {
     const { hotelName, hotelCity, hotelRoomType, hotelPhoneNumber, hotelPrice } = hotelData;
     if (!validatePhoneNumber(hotelPhoneNumber.toString())) {
-        console.log('hotel phone number invalid : handleHotel.ts')
-        throw new Error('invalid hotel mobile number given')
+        console.log('hotel phone number invalid : handleHotel.ts');
+        throw new Error('invalid hotel mobile number given');
     }
     db.run(`
     	insert into Hotel (Hname, City, Phone, Room_type, Price)
@@ -13,15 +13,29 @@ export function addNewHotel(hotelData: HotelDataType) {
         if (err) {
             throw err;
         }
-    })
+    });
 }
 
-export function getAllHotels() {
-    db.all('select * from Hotel;', [], (err: Error, rows: any[]) => {
-        if (err) {
-            throw err;
-        }
+export async function getAllHotels(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM Hotel', (err: Error, rows: any[]) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+}
 
-        return rows;
-    })
-} 
+export async function deleteHotel(hotelNo: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+        db.run(`delete from Hotel where Hno = (?)`, hotelNo, (err: Error) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
