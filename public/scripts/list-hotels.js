@@ -34,12 +34,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+function convertIntoCurrencyString(price) {
+    return price.toLocaleString('en-IN', {
+        style: 'currency',
+        currency: 'INR'
+    });
+}
+var currentModalHotelID = -1;
+var currentHotelTableRow;
 var table = document.querySelector("table");
 var hotelModalBackground = document.getElementById('hotel-modal-background');
 var hotelModalCloseButton = document.getElementById('hotel-modal-close-button');
+hotelModalCloseButton.addEventListener('click', hideModal);
+var hotelUpdateForm = document.getElementById("modal-hotel-update-form");
+var hotelUpdateFormSubmitButton = document.getElementById('hotel-update-form-submit-button');
+var modalHotelName = document.getElementById('hotel-name');
+var modalHotelCity = document.getElementById('hotel-city');
+var modalHotelPhoneNumber = document.getElementById('hotel-phone-number');
+var modalHotelRoomType = document.getElementById('hotel-room-type');
+var modalHotelPrice = document.getElementById('hotel-price');
 function getAllHotels() {
     return __awaiter(this, void 0, void 0, function () {
-        var res, hotelData, _i, hotelData_1, hotel, row, HnoCell, HnameCell, CityCell, PhoneCell, Room_typeCell, PriceCell, priceInINR, EditDeleteBtnContainerRow, EditDeleteBtnContainer, editBtn, deleteBtn;
+        var res, hotelData, _i, hotelData_1, hotel, row, HnoCell, HnameCell, CityCell, PhoneCell, Room_typeCell, PriceCell, EditDeleteBtnContainerRow, EditDeleteBtnContainer, editBtn, deleteBtn;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fetch('http://localhost:5000/get-all-hotels')];
@@ -52,6 +68,11 @@ function getAllHotels() {
                         hotel = hotelData_1[_i];
                         row = table.insertRow();
                         row.dataset.hid = hotel.Hno;
+                        row.dataset.hname = hotel.Hname;
+                        row.dataset.hcity = hotel.City;
+                        row.dataset.hphone = hotel.Phone;
+                        row.dataset.hprice = hotel.Price;
+                        row.dataset.hroomtype = hotel.Room_type;
                         HnoCell = row.insertCell();
                         HnoCell.innerText = hotel.Hno;
                         HnoCell.style.textAlign = "center";
@@ -64,11 +85,7 @@ function getAllHotels() {
                         Room_typeCell = row.insertCell();
                         Room_typeCell.innerText = hotel.Room_type;
                         PriceCell = row.insertCell();
-                        priceInINR = (hotel.Price).toLocaleString('en-IN', {
-                            style: 'currency',
-                            currency: 'INR'
-                        });
-                        PriceCell.innerText = priceInINR;
+                        PriceCell.innerText = convertIntoCurrencyString(hotel.Price);
                         PriceCell.style.textAlign = "right";
                         PriceCell.style.padding = "12px";
                         EditDeleteBtnContainerRow = row.insertCell();
@@ -99,17 +116,6 @@ function displayModal() {
 function hideModal() {
     hotelModalBackground.classList.add('hidden');
 }
-function editHotel(e) {
-    return __awaiter(this, void 0, void 0, function () {
-        var tableRow, hotelID;
-        return __generator(this, function (_a) {
-            displayModal();
-            tableRow = e.currentTarget.parentNode.parentNode.parentNode;
-            hotelID = Number(tableRow.dataset.hid);
-            return [2 /*return*/];
-        });
-    });
-}
 function deleteHotel(e) {
     return __awaiter(this, void 0, void 0, function () {
         var tableRow, hotelID, res;
@@ -127,8 +133,80 @@ function deleteHotel(e) {
                         tableRow.remove();
                     }
                     else {
-                        console.log('some error occurred');
+                        console.log('some error occurred while deleting');
                     }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function populateModal(hotelID, tableRow) {
+    currentModalHotelID = hotelID;
+    modalHotelName.value = tableRow.dataset.hname;
+    modalHotelCity.value = tableRow.dataset.hcity;
+    modalHotelPhoneNumber.valueAsNumber = Number(tableRow.dataset.hphone);
+    modalHotelPrice.valueAsNumber = Number(tableRow.dataset.hprice);
+    modalHotelRoomType.value = tableRow.dataset.hroomtype;
+}
+function editHotel(e) {
+    displayModal();
+    var tableRow = e.currentTarget.parentNode.parentNode.parentNode;
+    currentHotelTableRow = tableRow;
+    var hotelID = Number(tableRow.dataset.hid);
+    populateModal(hotelID, tableRow);
+}
+hotelUpdateForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    hotelUpdateFormSubmitButton.disabled = true;
+    var formData = new FormData(hotelUpdateForm);
+    if (!formData) {
+        throw new Error("hotel input form wasn't submitted successfully");
+    }
+    var hotelData = {
+        hotelName: formData.get('hotel_name').trim(),
+        hotelCity: formData.get('hotel_city').trim(),
+        hotelRoomType: formData.get('hotel_room_type').trim(),
+        hotelPhoneNumber: Number(formData.get('hotel_phone_number')),
+        hotelPrice: Number(formData.get('hotel_price'))
+    };
+    updateHotel(currentModalHotelID, hotelData);
+});
+function updateHotel(hotelID, hotelData) {
+    return __awaiter(this, void 0, void 0, function () {
+        var res;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch("http://localhost:5000/update-hotel/".concat(hotelID), {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(hotelData)
+                    })];
+                case 1:
+                    res = _a.sent();
+                    if (!res.ok) {
+                        console.error("could not update hotel with hotelID ".concat(hotelID));
+                    }
+                    else {
+                        hideModal();
+                        /* 1 represents hotel name */
+                        currentHotelTableRow.dataset.hname = hotelData.hotelName;
+                        currentHotelTableRow.children[1].innerHTML = hotelData.hotelName;
+                        /* 2 represents hotel city */
+                        currentHotelTableRow.dataset.hcity = hotelData.hotelCity;
+                        currentHotelTableRow.children[2].innerHTML = hotelData.hotelCity;
+                        /* 3 represents hotel phone */
+                        currentHotelTableRow.dataset.hphone = "".concat(hotelData.hotelPhoneNumber);
+                        currentHotelTableRow.children[3].innerHTML = "".concat(hotelData.hotelPhoneNumber);
+                        /* 4 represents hotel room type */
+                        currentHotelTableRow.dataset.hroomtype = hotelData.hotelRoomType;
+                        currentHotelTableRow.children[4].innerHTML = hotelData.hotelRoomType;
+                        /* 5 represents hotel price */
+                        currentHotelTableRow.dataset.hprice = "".concat(hotelData.hotelPrice);
+                        currentHotelTableRow.children[5].innerHTML = "".concat(convertIntoCurrencyString(hotelData.hotelPrice));
+                    }
+                    hotelUpdateFormSubmitButton.disabled = false;
                     return [2 /*return*/];
             }
         });
@@ -136,4 +214,3 @@ function deleteHotel(e) {
 }
 hideModal();
 getAllHotels();
-hotelModalCloseButton.addEventListener('click', hideModal);

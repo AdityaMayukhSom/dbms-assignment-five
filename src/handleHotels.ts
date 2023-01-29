@@ -18,7 +18,6 @@ export async function addNewHotel(hotelData: HotelDataType): Promise<void> {
             }
         });
     });
-
 }
 
 export async function getAllHotels(): Promise<any[]> {
@@ -33,9 +32,23 @@ export async function getAllHotels(): Promise<any[]> {
     });
 }
 
-export async function deleteHotel(hotelNo: number): Promise<void> {
+export async function deleteHotel(hotelID: number): Promise<void> {
     return new Promise((resolve, reject) => {
-        db.run(`delete from Hotel where Hno = (?)`, hotelNo, (err: Error) => {
+        db.run(`delete from Hotel where Hno = (?)`, hotelID, (err: Error) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+export async function updateHotel(hotelID: number, hotelData: HotelDataType): Promise<void> {
+    const { hotelName, hotelCity, hotelRoomType, hotelPhoneNumber, hotelPrice } = hotelData;
+    return new Promise((resolve, reject) => {
+        db.run(`update Hotel 
+        set Hname = "${hotelName}", City = "${hotelCity}", Phone = ${hotelPhoneNumber}, Room_type = "${hotelRoomType}", Price = ${hotelPrice} where Hno = ${hotelID}`, (err: Error) => {
             if (err) {
                 reject(err);
             } else {
