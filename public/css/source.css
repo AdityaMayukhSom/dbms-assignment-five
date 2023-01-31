@@ -6,11 +6,11 @@
   @apply flex justify-center py-7 lg:py-12 px-7 lg:px-8 rounded-lg items-center no-underline text-black bg-black bg-opacity-10 hover:bg-opacity-25 hover:font-medium text-center;
 }
 .edit-button-style {
-  @apply rounded bg-green-500 px-4 py-2 text-white;
+  @apply rounded bg-green-500 px-4 py-2 text-white m-2;
 }
 
 .delete-button-style {
-  @apply bg-red-500 text-white p-2 rounded-md text-center inline-block no-underline;
+  @apply bg-red-500 text-white p-2 rounded-md text-center inline-block no-underline m-2;
 }
 
 /* This is specifically written because otherwise if some class is not used in html directly, tailwind is not adding that class in the output.css. */

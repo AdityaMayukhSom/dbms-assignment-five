@@ -1,4 +1,4 @@
-export interface GuestDataType {
+interface GuestDataType {
     guestName: string,
     guestAddress: string,
     guestPhoneNumber: number;
@@ -18,6 +18,8 @@ guestInputForm.addEventListener('submit', (e: SubmitEvent) => {
         guestPhoneNumber: Number(guestFormData.get('guest_phone_number'))
     };
 
+
+    console.log(guestData);
     createGuest(guestData);
 });
 

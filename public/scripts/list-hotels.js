@@ -45,7 +45,7 @@ var currentHotelTableRow;
 var table = document.querySelector("table");
 var hotelModalBackground = document.getElementById('hotel-modal-background');
 var hotelModalCloseButton = document.getElementById('hotel-modal-close-button');
-hotelModalCloseButton.addEventListener('click', hideModal);
+hotelModalCloseButton.addEventListener('click', hideHotelEditModal);
 var hotelUpdateForm = document.getElementById("modal-hotel-update-form");
 var hotelUpdateFormSubmitButton = document.getElementById('hotel-update-form-submit-button');
 var modalHotelName = document.getElementById('hotel-name');
@@ -110,10 +110,10 @@ function getAllHotels() {
         });
     });
 }
-function displayModal() {
+function displayHotelEditModal() {
     hotelModalBackground.classList.remove('hidden');
 }
-function hideModal() {
+function hideHotelEditModal() {
     hotelModalBackground.classList.add('hidden');
 }
 function deleteHotel(e) {
@@ -140,7 +140,7 @@ function deleteHotel(e) {
         });
     });
 }
-function populateModal(hotelID, tableRow) {
+function populateHotelEditModal(hotelID, tableRow) {
     currentModalHotelID = hotelID;
     modalHotelName.value = tableRow.dataset.hname;
     modalHotelCity.value = tableRow.dataset.hcity;
@@ -149,11 +149,11 @@ function populateModal(hotelID, tableRow) {
     modalHotelRoomType.value = tableRow.dataset.hroomtype;
 }
 function editHotel(e) {
-    displayModal();
+    displayHotelEditModal();
     var tableRow = e.currentTarget.parentNode.parentNode.parentNode;
     currentHotelTableRow = tableRow;
     var hotelID = Number(tableRow.dataset.hid);
-    populateModal(hotelID, tableRow);
+    populateHotelEditModal(hotelID, tableRow);
 }
 hotelUpdateForm.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -189,7 +189,7 @@ function updateHotel(hotelID, hotelData) {
                         console.error("could not update hotel with hotelID ".concat(hotelID));
                     }
                     else {
-                        hideModal();
+                        hideHotelEditModal();
                         /* 1 represents hotel name */
                         currentHotelTableRow.dataset.hname = hotelData.hotelName;
                         currentHotelTableRow.children[1].innerHTML = hotelData.hotelName;
@@ -212,5 +212,5 @@ function updateHotel(hotelID, hotelData) {
         });
     });
 }
-hideModal();
+hideHotelEditModal();
 getAllHotels();

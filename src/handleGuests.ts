@@ -41,7 +41,7 @@ export async function deleteGuest(guestID: number): Promise<void> {
 export async function updateGuest(guestID: number, guestData: GuestDataType): Promise<void> {
     const { guestName, guestAddress, guestPhoneNumber } = guestData;
     return new Promise((resolve, reject) => {
-        db.run(`update Guest set Gname = "${guestName}", Address = "${guestAddress}", Phone = ${guestPhoneNumber} where Hno = ${guestID}`, (err: Error) => {
+        db.run(`update Guest set Gname = "${guestName}", Address = "${guestAddress}", Phone = ${guestPhoneNumber} where Gno = ${guestID}`, (err: Error) => {
             if (err) {
                 reject(err);
             } else {

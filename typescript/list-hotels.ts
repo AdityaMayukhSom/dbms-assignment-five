@@ -19,7 +19,7 @@ const table = document.querySelector("table") as HTMLTableElement;
 
 const hotelModalBackground = document.getElementById('hotel-modal-background') as HTMLDivElement;
 const hotelModalCloseButton = document.getElementById('hotel-modal-close-button') as HTMLButtonElement;
-hotelModalCloseButton.addEventListener('click', hideModal);
+hotelModalCloseButton.addEventListener('click', hideHotelEditModal);
 
 const hotelUpdateForm = document.getElementById("modal-hotel-update-form") as HTMLFormElement;
 const hotelUpdateFormSubmitButton = document.getElementById('hotel-update-form-submit-button') as HTMLButtonElement;
@@ -86,11 +86,11 @@ async function getAllHotels(): Promise<void> {
     }
 }
 
-function displayModal(): void {
+function displayHotelEditModal(): void {
     hotelModalBackground.classList.remove('hidden');
 }
 
-function hideModal(): void {
+function hideHotelEditModal(): void {
     hotelModalBackground.classList.add('hidden');
 }
 
@@ -107,7 +107,7 @@ async function deleteHotel(e: MouseEvent) {
     }
 }
 
-function populateModal(hotelID: number, tableRow: HTMLTableRowElement): void {
+function populateHotelEditModal(hotelID: number, tableRow: HTMLTableRowElement): void {
     currentModalHotelID = hotelID;
     modalHotelName.value = tableRow.dataset.hname as string;
     modalHotelCity.value = tableRow.dataset.hcity as string;
@@ -117,11 +117,11 @@ function populateModal(hotelID: number, tableRow: HTMLTableRowElement): void {
 }
 
 function editHotel(e: MouseEvent) {
-    displayModal();
+    displayHotelEditModal();
     const tableRow = (((e.currentTarget as HTMLButtonElement).parentNode as HTMLDivElement).parentNode as HTMLTableCellElement).parentNode as HTMLTableRowElement;
     currentHotelTableRow = tableRow;
     const hotelID = Number(tableRow.dataset.hid);
-    populateModal(hotelID, tableRow);
+    populateHotelEditModal(hotelID, tableRow);
 }
 
 hotelUpdateForm.addEventListener('submit', (e: SubmitEvent) => {
@@ -153,7 +153,7 @@ async function updateHotel(hotelID: number, hotelData: HotelDataType) {
     if (!res.ok) {
         console.error(`could not update hotel with hotelID ${hotelID}`);
     } else {
-        hideModal();
+        hideHotelEditModal();
         /* 1 represents hotel name */
         currentHotelTableRow.dataset.hname = hotelData.hotelName;
         currentHotelTableRow.children[1].innerHTML = hotelData.hotelName;
@@ -173,5 +173,5 @@ async function updateHotel(hotelID: number, hotelData: HotelDataType) {
     hotelUpdateFormSubmitButton.disabled = false;
 }
 
-hideModal();
+hideHotelEditModal();
 getAllHotels();

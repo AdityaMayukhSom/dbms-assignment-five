@@ -1,7 +1,7 @@
 import bp from 'body-parser';
 import express, { Request, Response, Application } from 'express';
 import { GuestDataType, HotelDataType, BookingDataType } from './src/middleware';
-import { addNewGuest, getAllGuests, updateGuest } from './src/handleGuests';
+import { addNewGuest, deleteGuest, getAllGuests, updateGuest } from './src/handleGuests';
 import { addNewHotel, deleteHotel, getAllHotels, updateHotel } from './src/handleHotels';
 import { addNewBooking } from './src/handleBookings';
 
@@ -44,7 +44,6 @@ app.get('/current-guests', (req: Request, res: Response) => {
 app.get('/current-bookings', (req: Request, res: Response) => {
 	res.status(200).sendFile(__dirname + '/public/list-bookings.html');
 });
-
 
 app.post('/create-hotel', async (req: Request, res: Response) => {
 	const hotelData: HotelDataType = req.body;
@@ -107,7 +106,7 @@ app.delete('/delete-hotel/:hotelID', async (req: Request, res: Response) => {
 app.delete('/delete-guest/:guestID', async (req: Request, res: Response) => {
 	const guestID = Number(req.params.guestID);
 	try {
-		await deleteHotel(guestID);
+		await deleteGuest(guestID);
 		res.status(200).send({ status: `guest with guestID ${guestID} deleted` });
 	} catch (err) {
 		res.status(500).send({ status: `server was unable to delete guest with guestID ${guestID}` });

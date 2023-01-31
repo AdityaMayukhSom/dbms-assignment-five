@@ -13,7 +13,7 @@ export interface HotelDataType {
 	hotelCity: string,
 	hotelRoomType: string,
 	hotelPhoneNumber: number,
-	hotelPrice: number
+	hotelPrice: number;
 }
 
 /**
@@ -21,11 +21,12 @@ export interface HotelDataType {
  * 
  * Contains guestID (optional), guestName, guestAddress, guestPhoneNumber
  */
+
 export interface GuestDataType {
 	guestID?: number,
 	guestName: string,
 	guestAddress: string,
-	guestPhoneNumber: number
+	guestPhoneNumber: number;
 }
 
 /**
@@ -38,7 +39,7 @@ export interface BookingDataType {
 	hotelNumber: number,
 	guestNumber: number,
 	bookingFrom: Date;
-	bookingUpto: Date
+	bookingUpto: Date;
 }
 
 
