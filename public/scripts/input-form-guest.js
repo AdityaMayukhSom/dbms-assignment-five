@@ -55,7 +55,7 @@ function createGuest(guestData) {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch('http://localhost:5000/guestinput', {
+                case 0: return [4 /*yield*/, fetch('http://localhost:5000/create-guest', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

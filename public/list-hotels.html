@@ -18,8 +18,8 @@
 </head>
 
 <body>
-    <h1 class="w-full text-center text-5xl py-8 font-bold">Hotel Data</h1>
-    <table aria-busy="true" class="border-collapse w-full border-gray-400 ">
+    <h1 class="w-full py-8 text-5xl font-bold text-center">Hotel Data</h1>
+    <table aria-busy="true" class="w-full border-collapse border-gray-400 ">
         <thead>
             <tr class="bg-[#f2f2f2] [&>*]:text-center">
                 <th>Hotel ID</th>
@@ -34,17 +34,17 @@
         <tbody id="tableData" class=""></tbody>
     </table>
 
-    <div class="bg-opacity-25 bg-black fade fixed top-0 left-0  w-full h-full outline-none overflow-x-hidden overflow-y-auto flex justify-center items-center"
+    <div class="fixed top-0 left-0 flex items-center justify-center w-full h-full overflow-x-hidden overflow-y-auto bg-black bg-opacity-25 outline-none fade"
         id="hotel-modal-background" tabindex="-1" aria-labelledby="hotelModal" aria-modal="true">
         <div
-            class="modal-content border-none shadow-lg relative flex flex-col w-fit pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current px-6">
+            class="relative flex flex-col px-6 text-current bg-white border-none rounded-md shadow-lg outline-none pointer-events-auto modal-content w-fit bg-clip-padding">
             <div
-                class="modal-header flex flex-shrink-0 items-center justify-between py-4 border-b border-gray-200 rounded-t-md">
+                class="flex items-center justify-between flex-shrink-0 py-4 border-b border-gray-200 modal-header rounded-t-md">
                 <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalScrollableLabel">
                     Hotel Modification Form
                 </h5>
                 <button type="button" id="hotel-modal-close-button"
-                    class=" text-black text-3xl border-none text-center px-3 focus:shadow-none focus:outline-none"
+                    class="px-3 text-3xl text-center text-black border-none focus:shadow-none focus:outline-none"
                     aria-label="Close">x</button>
             </div>
             <form id="modal-hotel-update-form" name="hotel-input-form" method="POST"
@@ -67,7 +67,7 @@
                 <input type="number" id="hotel-price" name="hotel_price" placeholder="Enter Hotel Number" required />
             </form>
             <div
-                class="modal-footer flex flex-shrink-0  items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
+                class="flex items-center justify-end flex-shrink-0 p-4 border-t border-gray-200 modal-footer rounded-b-md">
                 <button type="submit" id="hotel-update-form-submit-button" form="modal-hotel-update-form"
                     class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1">
                     Save changes

@@ -60,7 +60,7 @@ function createHotel(hotelData) {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch('http://localhost:5000/hotelinput', {
+                case 0: return [4 /*yield*/, fetch('http://localhost:5000/create-hotel', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

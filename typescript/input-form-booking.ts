@@ -2,7 +2,7 @@ interface BookingDataType {
     hotelNumber: number,
     guestNumber: number,
     bookingFrom: Date;
-    bookingUpto: Date
+    bookingUpto: Date;
 }
 
 const bookingInputForm = document.getElementById("booking-input-form") as HTMLFormElement;
@@ -22,20 +22,20 @@ bookingInputForm.addEventListener('submit', (e: SubmitEvent) => {
             guestNumber: Number(bookingFormData.get('gno')),
             bookingFrom: bookingFrom,
             bookingUpto: bookingUpto
-        }
+        };
         createBooking(bookingData);
     }
 });
 
 async function createBooking(bookingData: BookingDataType) {
-    const res: Response = await fetch('http://localhost:5000/bookinginput', {
+    const res: Response = await fetch('http://localhost:5000/create-booking', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(bookingData)
-    })
+    });
     if (!res.ok) {
-        console.error('could not create booking')
+        console.error('could not create booking');
     }
 }

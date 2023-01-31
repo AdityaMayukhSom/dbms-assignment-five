@@ -58,7 +58,7 @@ function createBooking(bookingData) {
         var res;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch('http://localhost:5000/bookinginput', {
+                case 0: return [4 /*yield*/, fetch('http://localhost:5000/create-booking', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

@@ -1,13 +1,14 @@
 import bp from 'body-parser';
 import express, { Request, Response, Application } from 'express';
-import { GuestDataType, HotelDataType } from './src/middleware';
-import { addNewGuest } from './src/handleGuests';
+import { GuestDataType, HotelDataType, BookingDataType } from './src/middleware';
+import { addNewGuest, getAllGuests, updateGuest } from './src/handleGuests';
 import { addNewHotel, deleteHotel, getAllHotels, updateHotel } from './src/handleHotels';
 import { addNewBooking } from './src/handleBookings';
 
 const app: Application = express();
 const port: number = 5000;
 const baseURL: string = 'http://localhost:' + port;
+
 // Because we are using Express@4 we need to install the body - parser package:
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
@@ -20,55 +21,16 @@ app.get('/', (req: Request, res: Response) => {
 	res.sendFile(__dirname + '/public/homepage.html');
 });
 
-/* routes for hotels */
 app.get('/hotel-input-form', (req: Request, res: Response) => {
 	res.sendFile(__dirname + '/public/input-form-hotel.html');
 });
 
-app.post('/hotelinput', async (req: Request, res: Response) => {
-	const hotelData: HotelDataType = req.body;
-	if (!hotelData) {
-		return res.status(400).send({ status: 'failed to recieve hotel data' });
-	}
-
-	try {
-		await addNewHotel(hotelData);
-		return res.status(301).location('/current-hotels').send('hotel data is recieved and succesfully added to the database');
-
-	} catch (err) {
-		return res.status(500).send('hotel data recieved but server was unable to update the database');
-	}
-});
-
-/* routes for guests */
 app.get('/guest-input-form', (req: Request, res: Response) => {
 	res.status(200).sendFile(__dirname + '/public/input-form-guest.html');
 });
 
-app.post('/guestinput', (req: Request, res: Response) => {
-	const guestData: GuestDataType = req.body;
-	if (!guestData) {
-		return res.status(400).send({ status: 'failed to recieve guest data' });
-	}
-	try {
-		addNewGuest(guestData);
-		return res.status(200).send({ status: 'guest data recieved' });
-	} catch (err) {
-		return res.status(500).send({ status: 'guest data recieved but server was unable to update the database' });
-	}
-});
-
-/* routes for bookings */
 app.get('/booking-input-form', (req: Request, res: Response) => {
 	res.status(200).sendFile(__dirname + '/public/input-form-booking.html');
-});
-
-app.post('/bookinginput', (req: Request, res: Response) => {
-	const bookingData = req.body;
-	if (!bookingData) {
-		res.status(400).send({ status: 'failed to get boooking information' });
-	}
-	addNewBooking(bookingData);
 });
 
 app.get('/current-hotels', (req: Request, res: Response) => {
@@ -83,12 +45,52 @@ app.get('/current-bookings', (req: Request, res: Response) => {
 	res.status(200).sendFile(__dirname + '/public/list-bookings.html');
 });
 
+
+app.post('/create-hotel', async (req: Request, res: Response) => {
+	const hotelData: HotelDataType = req.body;
+	try {
+		await addNewHotel(hotelData);
+		return res.status(301).location('/current-hotels').send('hotel data recieved and succesfully added to the database');
+	} catch (err) {
+		return res.status(500).send('hotel data recieved but server was unable to update the database');
+	}
+});
+
+app.post('/create-guest', async (req: Request, res: Response) => {
+	const guestData: GuestDataType = req.body;
+	try {
+		await addNewGuest(guestData);
+		return res.status(301).location('/current-guests').send('guest data recieved and succesfully added to the database');
+	} catch (err) {
+		return res.status(500).send('guest data recieved but server was unable to update the database');
+	}
+});
+
+app.post('/create-booking', async (req: Request, res: Response) => {
+	const bookingData: BookingDataType = req.body;
+	try {
+		await addNewBooking(bookingData);
+		return res.status(301).location('/current-bookings').send('bookings data recieved and succesfully added to the database');
+	} catch (err) {
+		return res.status(500).send('hotel data recieved but server was unable to update the database');
+	}
+});
+
 app.get('/get-all-hotels', async (req: Request, res: Response) => {
 	try {
 		const hotelDetails = await getAllHotels();
 		res.status(200).send(hotelDetails);
 	} catch (err) {
 		res.status(500).send({ status: 'server was not able to fetch all hotel details' });
+	}
+});
+
+app.get('/get-all-guests', async (req: Request, res: Response) => {
+	try {
+		const guestDetails = await getAllGuests();
+		return res.status(200).send(guestDetails);
+	} catch (err) {
+		return res.status(500).send({ status: 'server was not able to fetch all guest details' });
 	}
 });
 
@@ -102,14 +104,19 @@ app.delete('/delete-hotel/:hotelID', async (req: Request, res: Response) => {
 	}
 });
 
+app.delete('/delete-guest/:guestID', async (req: Request, res: Response) => {
+	const guestID = Number(req.params.guestID);
+	try {
+		await deleteHotel(guestID);
+		res.status(200).send({ status: `guest with guestID ${guestID} deleted` });
+	} catch (err) {
+		res.status(500).send({ status: `server was unable to delete guest with guestID ${guestID}` });
+	}
+});
+
 app.put('/update-hotel/:hotelID', async (req: Request, res: Response) => {
 	const hotelID: number = Number(req.params.hotelID);
 	const latestHotelData: HotelDataType = req.body;
-	if (!latestHotelData) {
-		res.status(400).send({ status: `data to be updated was not sent to server properly` });
-	}
-
-	console.log(latestHotelData);
 	try {
 		await updateHotel(hotelID, latestHotelData);
 		res.status(200).send({ status: `data of hotel with hotelID ${hotelID} updated succesfully` });
@@ -117,7 +124,16 @@ app.put('/update-hotel/:hotelID', async (req: Request, res: Response) => {
 		res.status(500).send({ status: `server was unable to update hotel with hotelID ${hotelID}` });
 	}
 });
-
+app.put('/update-guest/:guestID', async (req: Request, res: Response) => {
+	const guestID: number = Number(req.params.guestID);
+	const latestGuestData: GuestDataType = req.body;
+	try {
+		await updateGuest(guestID, latestGuestData);
+		res.status(200).send({ status: `data of guest with guestID ${guestID} updated succesfully` });
+	} catch (err) {
+		res.status(500).send({ status: `server was unable to update guest with guestID ${guestID}` });
+	}
+});
 
 app.get('*', (req: Request, res: Response) => {
 	res.sendFile(__dirname + '/public/page-not-found.html');

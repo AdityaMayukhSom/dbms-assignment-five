@@ -33,7 +33,7 @@ hotelInputForm.addEventListener('submit', (e: SubmitEvent) => {
 
 
 async function createHotel(hotelData: HotelDataType) {
-    const res: Response = await fetch('http://localhost:5000/hotelinput', {
+    const res: Response = await fetch('http://localhost:5000/create-hotel', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
