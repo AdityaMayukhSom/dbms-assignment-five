@@ -40,18 +40,23 @@ bookingInputForm.addEventListener('submit', function (e) {
     var bookingFormData = new FormData(bookingInputForm);
     var bookingFrom = new Date(bookingFormData.get('date_from'));
     var bookingUpto = new Date(bookingFormData.get('date_upto'));
+    var hotelNo = Number(bookingFormData.get('hno'));
+    var guestNo = Number(bookingFormData.get('gno'));
+    if (!bookingFrom || !bookingUpto || !hotelNo || !guestNo) {
+        alert('please submit all requred informations');
+        return;
+    }
     if (bookingUpto <= bookingFrom && bookingFrom < new Date()) {
         alert('Please Enter Correct Booking Dates. Form Not Submitted.');
+        return;
     }
-    else {
-        var bookingData = {
-            hotelNumber: Number(bookingFormData.get('hno')),
-            guestNumber: Number(bookingFormData.get('gno')),
-            bookingFrom: bookingFrom,
-            bookingUpto: bookingUpto
-        };
-        createBooking(bookingData);
-    }
+    var bookingData = {
+        hotelNumber: hotelNo,
+        guestNumber: guestNo,
+        bookingFrom: bookingFrom,
+        bookingUpto: bookingUpto
+    };
+    createBooking(bookingData);
 });
 function createBooking(bookingData) {
     return __awaiter(this, void 0, void 0, function () {

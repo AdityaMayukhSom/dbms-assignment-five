@@ -67,6 +67,7 @@ app.post('/create-guest', async (req: Request, res: Response) => {
 
 app.post('/create-booking', async (req: Request, res: Response) => {
 	const bookingData: BookingDataType = req.body;
+	console.log(bookingData);
 	try {
 		await addNewBooking(bookingData);
 		return res.status(301).location('/current-bookings').send('bookings data recieved and succesfully added to the database');

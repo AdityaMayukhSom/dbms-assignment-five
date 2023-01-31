@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/output.css">
+    <title>Get All Bookings</title>
+    <style>
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="w-full py-8 text-5xl font-bold text-center">Bookings Data</h1>
+    <table aria-busy="true" class="w-full border-collapse border-gray-400" id="booking-table">
+        <thead>
+            <tr class="bg-[#f2f2f2] [&>*]:text-center">
+                <th>Hotel Number</th>
+                <th>Guest Number</th>
+                <th>Booking From</th>
+                <th>Booking Upto</th>
+                <th>Modify / Delete</th>
+            </tr>
+        </thead>
+        <tbody id="booking-table-body" class=""></tbody>
+    </table>
+
+    <div class="fixed top-0 left-0 flex items-center justify-center w-full h-full overflow-x-hidden overflow-y-auto bg-black bg-opacity-25 outline-none fade"
+        id="booking-modal-background" tabindex="-1" aria-labelledby="bookingModal" aria-modal="true">
+        <div
+            class="relative flex flex-col px-6 text-current bg-white border-none rounded-md shadow-lg outline-none pointer-events-auto modal-content w-fit bg-clip-padding">
+            <div
+                class="flex items-center justify-between flex-shrink-0 py-4 border-b border-gray-200 modal-header rounded-t-md">
+                <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalScrollableLabel">
+                    Booking Modification Form
+                </h5>
+                <button type="button" id="booking-modal-close-button"
+                    class="px-3 text-3xl text-center text-black border-none focus:shadow-none focus:outline-none"
+                    aria-label="Close">x</button>
+            </div>
+            <form id="modal-booking-update-form" name="booking-input-form" method="POST"
+                class="grid grid-cols-2 gap-2 py-3">
+                <label for="date_from">Book From : </label>
+                <input type="date" name="date_from" />
+                <label for="date_upto">Book Upto : </label>
+                <input type="date" name="date_upto" />
+            </form>
+            <div
+                class="flex items-center justify-end flex-shrink-0 p-4 border-t border-gray-200 modal-footer rounded-b-md">
+                <button type="submit" id="booking-update-form-submit-button" form="modal-booking-update-form"
+                    class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out ml-1">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>var exports = {};</script>
+    <script src="/scripts/list-bookings.js"></script>
+</body>
+
+</html>
