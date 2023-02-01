@@ -32,7 +32,7 @@ async function getAllBookings(): Promise<void> {
         row.dataset.date_upto = booking.Date_to;
 
         const bookingHotelNumberCell = row.insertCell();
-        bookingHotelNumberCell.innerText = booking.Gno;
+        bookingHotelNumberCell.innerText = booking.Hno;
         bookingHotelNumberCell.style.textAlign = "center";
 
 
