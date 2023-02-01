@@ -42,5 +42,7 @@ async function createBooking(bookingData: BookingDataType) {
     });
     if (!res.ok) {
         console.error('could not create booking');
+    } else {
+        location.assign(res.url);
     }
 }

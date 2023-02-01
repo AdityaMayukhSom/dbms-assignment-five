@@ -75,6 +75,9 @@ function createBooking(bookingData) {
                     if (!res.ok) {
                         console.error('could not create booking');
                     }
+                    else {
+                        location.assign(res.url);
+                    }
                     return [2 /*return*/];
             }
         });

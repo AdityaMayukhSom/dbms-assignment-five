@@ -103,19 +103,20 @@ function hideBookingEditModal() {
 }
 function deleteBooking(e) {
     return __awaiter(this, void 0, void 0, function () {
-        var tableRow, bookingID, res;
+        var bookingTableRow, guestID, hotelID, res;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    tableRow = e.currentTarget.parentNode.parentNode.parentNode;
-                    bookingID = Number(tableRow.dataset.gid);
-                    return [4 /*yield*/, fetch("http://localhost:5000/delete-booking/".concat(bookingID), {
+                    bookingTableRow = e.currentTarget.parentNode.parentNode.parentNode;
+                    guestID = Number(bookingTableRow.dataset.gid);
+                    hotelID = Number(bookingTableRow.dataset.hid);
+                    return [4 /*yield*/, fetch("/delete-booking/bookingDetails?guestID=".concat(guestID, "&hotelID=").concat(hotelID), {
                             method: 'DELETE'
                         })];
                 case 1:
                     res = _a.sent();
                     if (res.ok) {
-                        tableRow.remove();
+                        bookingTableRow.remove();
                     }
                     else {
                         console.log('some error occurred while deleting');
@@ -156,10 +157,10 @@ bookingUpdateForm.addEventListener('submit', function (e) {
 });
 function updateBooking(guestID, hotelID, bookingData) {
     return __awaiter(this, void 0, void 0, function () {
-        var res;
+        var res, dateFromString, dateUptoString;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch("/update-booking/booking?guestID=".concat(guestID, "&hotelID=").concat(hotelID), {
+                case 0: return [4 /*yield*/, fetch("/update-booking/bookingDetails?guestID=".concat(guestID, "&hotelID=").concat(hotelID), {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -172,13 +173,15 @@ function updateBooking(guestID, hotelID, bookingData) {
                         console.error("could not update booking");
                     }
                     else {
+                        dateFromString = bookingData.bookingFrom.toISOString().toString().split('T')[0];
+                        dateUptoString = bookingData.bookingUpto.toISOString().toString().split('T')[0];
                         hideBookingEditModal();
                         /* 2 represents booking from */
-                        currentBookingTableRow.dataset.date_from = bookingData.bookingFrom;
-                        currentBookingTableRow.children[2].innerHTML = bookingData.bookingFrom;
+                        currentBookingTableRow.dataset.date_from = dateFromString;
+                        currentBookingTableRow.children[2].innerHTML = dateFromString;
                         /* 3 represents booking upto */
-                        currentBookingTableRow.dataset.date_upto = bookingData.bookingUpto;
-                        currentBookingTableRow.children[3].innerHTML = bookingData.bookingUpto;
+                        currentBookingTableRow.dataset.date_upto = dateUptoString;
+                        currentBookingTableRow.children[3].innerHTML = dateUptoString;
                     }
                     bookingUpdateFormSubmitButton.disabled = false;
                     return [2 /*return*/];

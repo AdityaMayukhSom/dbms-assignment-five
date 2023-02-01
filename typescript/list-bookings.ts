@@ -78,13 +78,14 @@ function hideBookingEditModal(): void {
 }
 
 async function deleteBooking(e: MouseEvent) {
-    const tableRow = (((e.currentTarget as HTMLButtonElement).parentNode as HTMLDivElement).parentNode as HTMLTableCellElement).parentNode as HTMLTableRowElement;
-    const bookingID = Number(tableRow.dataset.gid);
-    const res = await fetch(`http://localhost:5000/delete-booking/${bookingID}`, {
+    const bookingTableRow = (((e.currentTarget as HTMLButtonElement).parentNode as HTMLDivElement).parentNode as HTMLTableCellElement).parentNode as HTMLTableRowElement;
+    const guestID = Number(bookingTableRow.dataset.gid);
+    const hotelID = Number(bookingTableRow.dataset.hid);
+    const res = await fetch(`/delete-booking/bookingDetails?guestID=${guestID}&hotelID=${hotelID}`, {
         method: 'DELETE'
     });
     if (res.ok) {
-        tableRow.remove();
+        bookingTableRow.remove();
     } else {
         console.log('some error occurred while deleting');
     }
@@ -124,7 +125,7 @@ bookingUpdateForm.addEventListener('submit', (e: SubmitEvent) => {
 });
 
 async function updateBooking(guestID: number, hotelID: number, bookingData: BookingDataType) {
-    const res: Response = await fetch(`/update-booking/booking?guestID=${guestID}&hotelID=${hotelID}`, {
+    const res: Response = await fetch(`/update-booking/bookingDetails?guestID=${guestID}&hotelID=${hotelID}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -135,8 +136,8 @@ async function updateBooking(guestID: number, hotelID: number, bookingData: Book
         console.error(`could not update booking`);
     } else {
 
-        const dateFromString = bookingData.bookingFrom.toString().split('T')[0];
-        const dateUptoString = bookingData.bookingUpto.toString().split('T')[0];
+        const dateFromString = bookingData.bookingFrom.toISOString().toString().split('T')[0];
+        const dateUptoString = bookingData.bookingUpto.toISOString().toString().split('T')[0];
         hideBookingEditModal();
         /* 2 represents booking from */
         currentBookingTableRow.dataset.date_from = dateFromString;

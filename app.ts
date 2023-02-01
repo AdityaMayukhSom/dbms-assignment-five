@@ -123,10 +123,9 @@ app.delete('/delete-guest/:guestID', async (req: Request, res: Response) => {
 	}
 });
 
-app.delete('/delete-booking/guestID=:guestID&hotelID=:hotelID', async (req: Request, res: Response) => {
-	const guestID = Number(req.params.guestID);
-	const hotelID = Number(req.params.hotelID);
-	console.log(req.params);
+app.delete('/delete-booking/bookingDetails', async (req: Request, res: Response) => {
+	const guestID = Number(req.query.guestID);
+	const hotelID = Number(req.query.hotelID);
 	try {
 		await deleteBooking(guestID, hotelID);
 		res.status(200).send({ status: `booking with guestID ${guestID} and hotelID ${hotelID} deleted` });
@@ -156,7 +155,7 @@ app.put('/update-guest/:guestID', async (req: Request, res: Response) => {
 	}
 });
 
-app.put('/update-booking/booking', async (req: Request, res: Response) => {
+app.put('/update-booking/bookingDetails', async (req: Request, res: Response) => {
 	const guestID = Number(req.query.guestID);
 	const hotelID = Number(req.query.hotelID);
 	const bookingData = req.body;
