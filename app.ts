@@ -3,7 +3,7 @@ import express, { Request, Response, Application } from 'express';
 import { GuestDataType, HotelDataType, BookingDataType } from './src/middleware';
 import { addNewGuest, deleteGuest, getAllGuests, updateGuest } from './src/handleGuests';
 import { addNewHotel, deleteHotel, getAllHotels, updateHotel } from './src/handleHotels';
-import { addNewBooking } from './src/handleBookings';
+import { addNewBooking, deleteBooking, getAllBookings, updateBooking } from './src/handleBookings';
 
 const app: Application = express();
 const port: number = 5000;
@@ -94,6 +94,15 @@ app.get('/get-all-guests', async (req: Request, res: Response) => {
 	}
 });
 
+app.get('/get-all-bookings', async (req: Request, res: Response) => {
+	try {
+		const guestDetails = await getAllBookings();
+		return res.status(200).send(guestDetails);
+	} catch (err) {
+		return res.status(500).send({ status: 'server was not able to fetch all guest details' });
+	}
+});
+
 app.delete('/delete-hotel/:hotelID', async (req: Request, res: Response) => {
 	const hotelID = Number(req.params.hotelID);
 	try {
@@ -111,6 +120,18 @@ app.delete('/delete-guest/:guestID', async (req: Request, res: Response) => {
 		res.status(200).send({ status: `guest with guestID ${guestID} deleted` });
 	} catch (err) {
 		res.status(500).send({ status: `server was unable to delete guest with guestID ${guestID}` });
+	}
+});
+
+app.delete('/delete-booking/guestID=:guestID&hotelID=:hotelID', async (req: Request, res: Response) => {
+	const guestID = Number(req.params.guestID);
+	const hotelID = Number(req.params.hotelID);
+	console.log(req.params);
+	try {
+		await deleteBooking(guestID, hotelID);
+		res.status(200).send({ status: `booking with guestID ${guestID} and hotelID ${hotelID} deleted` });
+	} catch (err) {
+		res.status(500).send({ status: `server was unable to delete booking with guestID ${guestID} and hotelID ${hotelID}` });
 	}
 });
 
@@ -132,6 +153,20 @@ app.put('/update-guest/:guestID', async (req: Request, res: Response) => {
 		res.status(200).send({ status: `data of guest with guestID ${guestID} updated succesfully` });
 	} catch (err) {
 		res.status(500).send({ status: `server was unable to update guest with guestID ${guestID}` });
+	}
+});
+
+app.put('/update-booking/booking', async (req: Request, res: Response) => {
+	const guestID = Number(req.query.guestID);
+	const hotelID = Number(req.query.hotelID);
+	const bookingData = req.body;
+	console.log(req.query);
+	console.log(bookingData);
+	try {
+		await updateBooking(guestID, hotelID, bookingData);
+		res.status(200).send({ status: `booking with guestID ${guestID} and hotelID ${hotelID} updated` });
+	} catch (err) {
+		res.status(500).send({ status: `server was unable to delete booking with guestID ${guestID} and hotelID ${hotelID}` });
 	}
 });
 

@@ -141,7 +141,6 @@ hotelUpdateForm.addEventListener('submit', (e: SubmitEvent) => {
     updateHotel(currentModalHotelID, hotelData);
 });
 
-
 async function updateHotel(hotelID: number, hotelData: HotelDataType) {
     const res: Response = await fetch(`http://localhost:5000/update-hotel/${hotelID}`, {
         method: 'PUT',
