@@ -64,7 +64,7 @@ function getAllBookings() {
                         row.dataset.date_from = booking.Date_from;
                         row.dataset.date_upto = booking.Date_to;
                         bookingHotelNumberCell = row.insertCell();
-                        bookingHotelNumberCell.innerText = booking.Gno;
+                        bookingHotelNumberCell.innerText = booking.Hno;
                         bookingHotelNumberCell.style.textAlign = "center";
                         bookingGuestNumberCell = row.insertCell();
                         bookingGuestNumberCell.innerText = booking.Gno;
